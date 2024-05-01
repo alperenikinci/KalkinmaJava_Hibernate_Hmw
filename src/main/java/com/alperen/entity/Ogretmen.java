@@ -21,8 +21,8 @@ public class Ogretmen extends BaseEntity {
     private Long id;
     @Embedded
     private KisiselBilgiler kisiselBilgiler;
+    @Enumerated(EnumType.STRING)
     private EBrans brans;
     @Column(name = "ise_baslama_tarihi")
     private Long iseBaslamaTarihi;
-
 }
