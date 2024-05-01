@@ -1,11 +1,10 @@
 package com.alperen.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -13,11 +12,13 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-public class Deneme extends BaseEntity{
+@Table(name = "tbl_sinif")
+public class Sinif extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    @Column(name = "sinif_adi")
+    private String sinifAdi;
 
 
 }

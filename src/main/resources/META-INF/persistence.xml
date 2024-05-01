@@ -10,7 +10,10 @@
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>com.alperen.entity.Deneme</class>
+        <class>com.alperen.entity.Ogretmen</class>
+        <class>com.alperen.entity.Ogrenci</class>
+        <class>com.alperen.entity.Sinif</class>
+        <class>com.alperen.entity.SinifOgretmen</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
