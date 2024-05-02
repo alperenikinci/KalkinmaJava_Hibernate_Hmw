@@ -234,6 +234,7 @@ public class Main_chatGPT_refactored {
         System.out.println("2- Ogrenci Olustur");
         System.out.println("3- Sinif Olustur");
         System.out.println("4- Sinifa Ogretmen Ata");
-        System.out.println("0- Cikis yap");
+        System.out.println("5- Dogum Tarihine Gore Ogrenci Getir.");
+        System.out.println("0- Cikis Yap");
     }
 }

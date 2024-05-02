@@ -1,7 +1,6 @@
 package com.alperen;
 
 import com.alperen.entity.*;
-import com.alperen.repository.SinifRepository;
 import com.alperen.service.OgrenciService;
 import com.alperen.service.OgretmenService;
 import com.alperen.service.SinifOgretmenService;
@@ -33,10 +32,10 @@ public class Main {
         Main main = new Main();
         DataGenerator dataGenerator = new DataGenerator();
 //        dataGenerator.dataOlustur();
-        dataGenerator.siniflariOlustur();
+//        dataGenerator.siniflariOlustur();
 //        dataGenerator.ogretmenleriOlustur();
 //        dataGenerator.sinifOgretmenEsle();
-//        dataGenerator.ogrencileriOlustur();
+        dataGenerator.ogrencileriOlustur();
 //        System.out.println(main.ogretmenService.getSiniflarByOgretmenId(1L));
         main.uygulama();
     }
@@ -72,6 +71,9 @@ public class Main {
                     sinifaOgretmenAta();
                     break;
                 }
+                case 5:
+                    dogumTarihineGoreOgrencileriBul();
+                    break;
                 case 0: {
                     System.err.println("Görüşmek üzere!!!");
                     exitStatus = false;
@@ -82,6 +84,41 @@ public class Main {
                     break;
                 }
             }
+        }
+    }
+
+    private List<Ogrenci> dogumTarihineGoreOgrencileriBul() {
+        Long longTarih = -1L;
+        Boolean buyukMu =  null;
+        while (true) {
+            try {
+                longTarih = getDate("Lutfen bir tarih giriniz (gg/AA/yyyy) : ");
+                try {
+                    System.out.println("1 - Bu tarihten once doganlari getirmek icin. ");
+                    System.out.println("2 - Bu tarihten sonra doganlari getirmek icin. ");
+                    System.out.print("Seciminiz : ");
+                    int secim = Integer.parseInt(scanner.nextLine());
+                    switch (secim){
+                        case 1: {
+                            buyukMu = false;
+                            break;
+                        }
+                        case 2: {
+                            buyukMu = true;
+                            break;
+                        }
+                    }
+                } catch (Exception e){
+                    System.out.println("Lutfen gecerli bir secim yapiniz ( 1 / 2 ).");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Lutfen istenilen formatta tarihi giriniz (gg/AA/yyyy)");
+            }
+            List<Ogrenci> ogrenciList = ogrenciService.dogumTarihineGoreOgrencileriBul(longTarih,buyukMu);
+            ogrenciService.dogumTarihineGoreOgrencileriBul(longTarih,buyukMu);
+            ogrenciList.forEach(o -> System.out.println(o.getKisiselBilgiler().getIsim() + " " + o.getKisiselBilgiler().getSoyisim()));
+            return ogrenciList;
         }
     }
 
@@ -133,7 +170,8 @@ public class Main {
                             } catch (Exception e) {
                                 System.out.println("Lutfen gecerli bir ogretmen id'si giriniz!!! ");
                             }
-                        }break;
+                        }
+                        break;
                     }
                 } catch (Exception e) {
                     System.out.println("Lutfen gecerli bir sinif id'si giriniz!!! ");
@@ -167,16 +205,19 @@ public class Main {
         System.out.println("##### OGRENCI OLUSTURMA #####");
         System.out.println("#############################\n");
 
+        Long sinifId = sinifSec("Lutfen ogrenciyi kaydetmek istediginiz sinifin id'sini giriniz, (Ana Sayfa Icin : 0 )  : ");
+        if (sinifId != 0) {
         Ogrenci ogrenci1 = Ogrenci.builder()
-                .sinifId(sinifSec("Lutfen ogrenciyi kaydetmek istediginiz sinifin id'sini giriniz : "))
+                .sinifId(sinifId)
                 .kisiselBilgiler(KisiselBilgiler.builder()
                         .isim(getStringValue("Lutfen bir isim giriniz : "))
                         .soyisim(getStringValue("Lutfen bir soyisim giriniz : "))
                         .tcKimlik(getStringValue("Lutfen tcKimlik giriniz ( max 11 ) : "))
                         .build())
-                .dogumTarihi(getBirthDate("Lutfen dogum tarihinizi giriniz (gun/ay/yil) : "))
+                .dogumTarihi(getDate("Lutfen dogum tarihinizi giriniz (gun/ay/yil) : "))
                 .build();
         ogrenciService.saveOgrenci(ogrenci1);
+    }
     }
 
     private Long sinifSec(String message) {
@@ -189,10 +230,14 @@ public class Main {
                 System.out.print(message);
                 Long sinifId = Long.parseLong(scanner.nextLine());
                 try {
+                    if (sinifId == 0){
+                       return sinifId;
+                    }
                     Optional<Sinif> sinifOptional = Optional.ofNullable(sinifList.stream().filter(x -> Objects.equals(x.getId(), sinifId)).collect(Collectors.toList()).get(0));
                     if (sinifOptional.isPresent()) {
                         return sinifOptional.get().getId();
                     }
+
                 } catch (Exception e) {
                     System.out.println("Lutfen gecerli bir sinif id'si giriniz!!! ");
                 }
@@ -220,7 +265,7 @@ public class Main {
         return scanner.nextLine();
     }
 
-    public Long getBirthDate(String message) {
+    public Long getDate(String message) {
         while (true) {
             try {
                 System.out.print(message);
@@ -260,11 +305,16 @@ public class Main {
             }
         }
     }
+
     public void menuOptions() {
+        System.out.println("\n###########################");
+        System.out.println("######## ANA SAYFA ########");
+        System.out.println("###########################\n");
         System.out.println("1- Ogretmen Olustur");
         System.out.println("2- Ogrenci Olustur");
         System.out.println("3- Sinif Olustur");
         System.out.println("4- Sinifa Ogretmen Ata");
+        System.out.println("5- Dogum Tarihine Gore Ogrencileri Bul");
         System.out.println("0- Cikis yap");
     }
 }

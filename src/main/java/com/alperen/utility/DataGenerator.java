@@ -129,11 +129,11 @@ public class DataGenerator {
         Ogrenci ogrenci1 = Ogrenci.builder()
                 .sinifId(1L)
                 .kisiselBilgiler(KisiselBilgiler.builder()
-                        .isim("Yusuf")
-                        .soyisim("Akbas")
+                        .isim("Alperen")
+                        .soyisim("Ikinci")
                         .tcKimlik("12345678910")
                         .build())
-                .dogumTarihi(123412356L)
+                .dogumTarihi(836813192000L)
                 .build();
         ogrenciService.saveOgrenci(ogrenci1);
 
@@ -144,7 +144,7 @@ public class DataGenerator {
                         .soyisim("Yilmaz")
                         .tcKimlik("31265789")
                         .build())
-                .dogumTarihi(46547489L)
+                .dogumTarihi(949046792000L)
                 .build();
         ogrenciService.saveOgrenci(ogrenci2);
 
@@ -155,7 +155,7 @@ public class DataGenerator {
                         .soyisim("Bilgin")
                         .tcKimlik("123")
                         .build())
-                .dogumTarihi(4547489L)
+                .dogumTarihi(1057651592000L)
                 .build();
         ogrenciService.saveOgrenci(ogrenci3);
 
